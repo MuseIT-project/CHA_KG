@@ -1,0 +1,11 @@
+PREFIX museit: <http://www.semanticweb.org/museITchassets#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?artForm (COUNT(DISTINCT ?asset) AS ?assets)
+WHERE {
+  ?asset museit:hasArtForm ?af .
+  OPTIONAL { ?af rdfs:label ?label }
+  BIND(COALESCE(?label, STR(?af)) AS ?artForm)
+}
+GROUP BY ?artForm
+ORDER BY DESC(?assets)

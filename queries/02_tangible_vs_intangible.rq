@@ -1,0 +1,7 @@
+PREFIX museit: <http://www.semanticweb.org/museITchassets#>
+SELECT ?type (COUNT(DISTINCT ?asset) AS ?count)
+WHERE {
+  VALUES ?type { museit:TangibleAsset museit:IntangibleAsset }
+  ?asset a ?type .
+}
+GROUP BY ?type

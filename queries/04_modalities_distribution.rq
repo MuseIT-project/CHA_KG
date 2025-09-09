@@ -1,0 +1,17 @@
+PREFIX museit: <http://www.semanticweb.org/museITchassets#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?modality (COUNT(DISTINCT ?asset) AS ?assets)
+WHERE {
+  ?asset museit:hasAccessibilityModality ?mod .
+  OPTIONAL {
+    SELECT ?mod (SAMPLE(?lbl_) AS ?lbl)
+    WHERE {
+      ?mod rdfs:label ?lbl_ .
+      FILTER(LANG(?lbl_) = "" || LANGMATCHES(LANG(?lbl_), "en"))
+    }
+    GROUP BY ?mod
+  }
+  BIND(COALESCE(?lbl, STR(?mod)) AS ?modality)
+}
+GROUP BY ?modality
+ORDER BY DESC(?assets)
